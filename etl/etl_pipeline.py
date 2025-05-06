@@ -1,11 +1,11 @@
 import pandas as pd
 from sqlalchemy import create_engine
 import os
+from etl.verificacao_qualidade import verificar_qualidade_dados
 
 def executar_etl():
     print("Iniciando processo ETL...")
 
-    # Mapeamento de arquivos e tipo de operação
     arquivos = {
         'dados/IMP_2020.csv': 'Importação',
         'dados/IMP_2021.csv': 'Importação',
@@ -15,7 +15,6 @@ def executar_etl():
 
     dataframes = []
 
-    # Carregar arquivos CSV
     for caminho, tipo in arquivos.items():
         if os.path.exists(caminho):
             df = pd.read_csv(caminho, sep=';', encoding='latin1')
@@ -24,15 +23,16 @@ def executar_etl():
         else:
             print(f"Arquivo não encontrado: {caminho}")
 
-     # Concatenar todos os dataframes e salvar no banco
     if dataframes:
         df_total = pd.concat(dataframes, ignore_index=True)
-
-        # Criar engine de conexão SQLite (dentro da pasta 'database/')
         engine = create_engine('sqlite:///database/comex.db')
 
-        #inserir no banco de dados
+        # 1. Inserir no banco
         df_total.to_sql('comex_detalhado', engine, if_exists='replace', index=False)
+
+        # 2. Verificar qualidade após inserção
+        verificar_qualidade_dados("comex_detalhado")
+
         print("ETL concluído.")
     else:
         print("Nenhum dado foi processado.")
