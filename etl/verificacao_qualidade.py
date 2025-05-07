@@ -1,48 +1,38 @@
 import pandas as pd
 from sqlalchemy import create_engine
 
-def verificar_qualidade_dados(nome_tabela, caminho_banco='comex.db'):
-    engine = create_engine(f'sqlite:///{caminho_banco}')
+def verificar_qualidade_dados(nome_tabela):
+    print(f"\nConsultando a tabela: {nome_tabela}")
+
+    engine = create_engine('sqlite:///database/comex.db')
     with engine.connect() as conn:
         df = pd.read_sql(f"SELECT * FROM {nome_tabela}", conn)
 
-    print(f"\n📊 Verificando qualidade dos dados da tabela: {nome_tabela}")
+    print("\n📌 Dados faltantes por coluna:")
+    print(df.isnull().sum())
 
-    # Verificar valores nulos
-    print("\n🔍 Valores nulos (apenas colunas com nulos):")
-    nulos = df.isnull().sum()
-    print(nulos[nulos > 0] if not nulos[nulos > 0].empty else "Nenhum valor nulo encontrado.")
-
-    # Tipos de dados
-    print("\n🔍 Tipos de dados das colunas:")
+    print("\n📌 Tipos de dados das colunas:")
     print(df.dtypes)
 
-    # Linhas duplicadas
-    print(f"\n🔍 Linhas totalmente duplicadas: {df.duplicated().sum()}")
+    print("\n📌 Registros duplicados:", df.duplicated().sum())
 
-    # Verificar se existem valores inválidos em colunas específicas
-    if 'CO_MES' in df.columns:
-        meses_invalidos = df[~df['CO_MES'].between(1, 12)]
-        print(f"\n🔍 Meses inválidos (fora de 1-12): {len(meses_invalidos)}")
+    print("\n📌 Valores únicos para CO_PAIS:", df['CO_PAIS'].nunique())
+    print("📌 Valores únicos para CO_NCM:", df['CO_NCM'].nunique())
 
-    if 'VL_FOB' in df.columns:
-        valores_negativos = df[df['VL_FOB'] < 0]
-        print(f"\n🔍 Valores negativos em VL_FOB: {len(valores_negativos)}")
+    print("\n📌 Verificação de anos válidos:")
+    anos_validos = df['CO_ANO'].isin([2020, 2021])
+    print(f"Linhas com anos válidos (2020 ou 2021): {anos_validos.sum()} de {len(df)}")
 
-    # Tipos esperados (opcional, para verificação de schema)
-    tipos_esperados = {
-        'CO_ANO': 'int64',
-        'CO_MES': 'int64',
-        'SG_UF': 'object',
-        'VL_FOB': 'float64',
-    }
-    print("\n🔍 Comparando tipos esperados (se as colunas existirem):")
-    for col, tipo in tipos_esperados.items():
-        if col in df.columns:
-            tipo_atual = df[col].dtype
-            if tipo_atual != tipo:
-                print(f"⚠️ Coluna '{col}' tem tipo '{tipo_atual}', esperado: '{tipo}'")
-        else:
-            print(f"⚠️ Coluna esperada '{col}' não encontrada no dataframe.")
+    print("\n📌 Verificação de VL_FOB:")
+    fob_invalidos = (df['VL_FOB'] <= 0).sum()
+    if fob_invalidos == 0:
+        print("✅ Todos os valores de FOB são positivos.")
+    else:
+        print(f"⚠️ Há {fob_invalidos} registros com VL_FOB inválido (<= 0)")
 
-    print("\n✅ Verificação de qualidade concluída.\n")
+    print("\n📌 Estatísticas de VL_FRETE e VL_SEGURO:")
+    print("Frete:")
+    print(df['VL_FRETE'].describe())
+    print("Seguro:")
+    print(df['VL_SEGURO'].describe())
+    

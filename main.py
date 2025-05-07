@@ -2,7 +2,6 @@ from etl.etl_pipeline import executar_etl
 import schedule
 import time
 
-
 # Roda agora para testar
 executar_etl()
 
