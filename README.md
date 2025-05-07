@@ -3,7 +3,7 @@
 Este projeto realiza o processo de **ETL (Extração, Transformação e Carga)** dos dados de exportação e importação do Brasil dos anos de 2020 e 2021, armazena-os em um banco de dados SQLite e disponibiliza um dashboard interativo construído no Power BI.
 
 ## 🗂 Estrutura do Projeto
-
+```
 ├── dados/                       # Arquivos CSV de entrada
 │   ├── EXP_2020.csv
 │   ├── EXP_2021.csv
@@ -22,7 +22,7 @@ Este projeto realiza o processo de **ETL (Extração, Transformação e Carga)**
 ├── executar_etl.py             # Script principal de carregamento
 ├── requirements.txt            # Dependências do projeto
 └── README.md
-
+```
 
 ## ⚙️ Pré-requisitos
 
@@ -39,7 +39,7 @@ source venv/bin/activate  # Ou `venv\Scripts\activate` no Windows
 pip install -r requirements.txt
 ```
 
-## Rodar
+## ▶️ Rodar
 ```bash
 Python main.py
 ```
