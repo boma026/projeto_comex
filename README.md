@@ -4,24 +4,25 @@ Este projeto realiza o processo de **ETL (Extração, Transformação e Carga)**
 
 ## 🗂 Estrutura do Projeto
 
-├── dados/ # Arquivos CSV de entrada
-│ ├── EXP_2020.csv
-│ ├── EXP_2021.csv
-│ ├── IMP_2020.csv
-│ └── IMP_2021.csv
+├── dados/                       # Arquivos CSV de entrada
+│   ├── EXP_2020.csv
+│   ├── EXP_2021.csv
+│   ├── IMP_2020.csv
+│   └── IMP_2021.csv
 │
 ├── database/
-│ └── comex.db # Banco SQLite gerado
+│   └── comex.db                # Banco SQLite gerado
 │
 ├── etl/
-│ └── verificacao_qualidade.py # Verificação da qualidade dos dados
+│   └── verificacao_qualidade.py  # Verificação da qualidade dos dados
 │
 ├── dashboards/
-│ └── comex_dashboard.pbix # Dashboard Power BI (offline)
+│   └── comex_dashboard.pbix     # Dashboard Power BI (offline)
 │
-├── executar_etl.py # Script principal de carregamento
-├── requirements.txt # Dependências do projeto
+├── executar_etl.py             # Script principal de carregamento
+├── requirements.txt            # Dependências do projeto
 └── README.md
+
 
 ## ⚙️ Pré-requisitos
 
@@ -36,7 +37,9 @@ python -m venv venv
 source venv/bin/activate  # Ou `venv\Scripts\activate` no Windows
 
 pip install -r requirements.txt
+```
 
 ## Rodar
 ```bash
 Python main.py
+```
