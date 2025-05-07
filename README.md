@@ -1,87 +1,42 @@
-# Projeto Comex
+# 📊 Projeto Comex (desafio SeuBoné)
 
-Este é um projeto de análise de dados de exportação e importação utilizando Python e Power BI.
+Este projeto realiza o processo de **ETL (Extração, Transformação e Carga)** dos dados de exportação e importação do Brasil dos anos de 2020 e 2021, armazena-os em um banco de dados SQLite e disponibiliza um dashboard interativo construído no Power BI.
 
-## Pré-requisitos
+## 🗂 Estrutura do Projeto
 
-Antes de rodar o projeto, você precisará instalar algumas dependências e configurar um ambiente de desenvolvimento.
+├── dados/ # Arquivos CSV de entrada
+│ ├── EXP_2020.csv
+│ ├── EXP_2021.csv
+│ ├── IMP_2020.csv
+│ └── IMP_2021.csv
+│
+├── database/
+│ └── comex.db # Banco SQLite gerado
+│
+├── etl/
+│ └── verificacao_qualidade.py # Verificação da qualidade dos dados
+│
+├── dashboards/
+│ └── comex_dashboard.pbix # Dashboard Power BI (offline)
+│
+├── executar_etl.py # Script principal de carregamento
+├── requirements.txt # Dependências do projeto
+└── README.md
 
-### 1. Criando o ambiente virtual
+## ⚙️ Pré-requisitos
 
-Primeiro, crie um ambiente virtual Python para isolar as dependências do projeto. Isso é recomendado para evitar conflitos com pacotes globais do seu sistema.
+- Python 3.9 ou superior
+- [Power BI Desktop (versão offline)]
 
-No terminal, execute:
+## 📥 Instalação
 
 ```bash
 python -m venv venv
 
-2. Instalando as dependências
-Depois de ativar o ambiente virtual, instale as dependências do projeto.
+source venv/bin/activate  # Ou `venv\Scripts\activate` no Windows
 
-Para Windows:
-
-bash
-Copiar
-Editar
-.\venv\Scripts\activate
-Para Linux/Mac:
-
-bash
-Copiar
-Editar
-source venv/bin/activate
-Com o ambiente ativado, instale as dependências usando o pip:
-
-bash
-Copiar
-Editar
 pip install -r requirements.txt
-Se o arquivo requirements.txt não existir, você pode criar um com as bibliotecas que está usando, como:
 
-txt
-Copiar
-Editar
-pandas
-sqlalchemy
-schedule
-gitpython
-requests
-
-3. Base de dados
-Os arquivos .csv com os dados de importação e exportação (excluídos do Git com .gitignore) precisam ser baixados manualmente e colocados no diretório de dados do projeto. O código depende desses arquivos para funcionar corretamente.
-
-Baixe os arquivos CSV (importação e exportação de 2020 e 2021).
-
-Coloque os arquivos baixados na pasta data/ ou no diretório apropriado do seu projeto.
-
-Por exemplo, o diretório de dados pode ser estruturado assim:
-
-text
-Copiar
-Editar
-/data
-  importacao_2020.csv
-  importacao_2021.csv
-  exportacao_2020.csv
-  exportacao_2021.csv
-4. Banco de dados
-O código usa um banco de dados SQLite (comex.db), que é gerado automaticamente ao rodar o script ETL. Não é necessário adicionar este arquivo ao Git devido ao seu tamanho, mas ele será criado localmente.
-
-5. Rodando o ETL
-O processo de ETL pode ser executado manualmente com o seguinte comando:
-
-bash
-Copiar
-Editar
-python etl_pipeline.py
-O script de ETL irá carregar os dados CSV para o banco de dados SQLite e realizar as transformações necessárias.
-
-6. Agendamento de Execução
-Se você deseja agendar a execução do ETL periodicamente, você pode usar o script main.py com a biblioteca schedule para rodar o ETL automaticamente em intervalos definidos.
-
-Para rodar o agendador, execute:
-
-bash
-Copiar
-Editar
-python main.py
+## Rodar
+```bash
+Python main.py
